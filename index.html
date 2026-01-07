@@ -12,6 +12,23 @@
 </head>
 
 <body>
+  <!-- Debug Logger -->
+  <div id="debug-log"
+    style="position: fixed; top: 0; left: 0; width: 100%; z-index: 9999; background: rgba(0,0,0,0.8); color: lime; padding: 10px; font-family: monospace; display: none; pointer-events: none;">
+  </div>
+  <script>
+    window.onerror = function (msg, url, line, col, error) {
+      const log = document.getElementById('debug-log');
+      log.style.display = 'block';
+      log.innerHTML += `<div>Error: ${msg} <br> at ${url}:${line}:${col}</div>`;
+      console.error(msg, error);
+    };
+    window.addEventListener('unhandledrejection', function (event) {
+      const log = document.getElementById('debug-log');
+      log.style.display = 'block';
+      log.innerHTML += `<div>Promise Rejected: ${event.reason}</div>`;
+    });
+  </script>
   <!-- Overlay -->
   <div class="overlay"></div>
 
@@ -206,7 +223,7 @@
     </div>
   </section>
 
-  
+
   <!-- Location Section -->
   <section id="location" class="section">
     <div class="container">

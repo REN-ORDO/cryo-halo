@@ -1,5 +1,7 @@
 
 import './style.css'
+import { app, analytics } from './firebase.js'; // Initialize Firebase
+import './vto/index.js' // Virtual Try-On Module
 import './vto/index.js' // Virtual Try-On Module
 
 // Hero Title Mouse Tracking Effect
