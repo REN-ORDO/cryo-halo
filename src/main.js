@@ -1,7 +1,39 @@
-
 import './style.css'
 import { app, analytics } from './firebase.js'; // Initialize Firebase
 import './vto/index.js' // Virtual Try-On Module
+import { fetchFromStrapi } from './api.js';
+
+// --- ELEMENTOS DEL DOM PARA STRAPI ---
+const heroTag = document.querySelector('.hero-tag');
+const heroTitle = document.querySelector('.hero-title');
+const heroSubtitle = document.querySelector('.hero-subtitle');
+const primaryBtn = document.querySelector('.hero-content .btn-primary:not([href="#virtual-try-on"])');
+const secondaryBtn = document.querySelector('a[href="#virtual-try-on"]');
+
+/**
+ * Carga los datos del Hero desde Strapi (Compatible con Strapi 5)
+ */
+async function loadHeroData() {
+  const data = await fetchFromStrapi('hero');
+
+  // En Strapi 5, los datos vienen directamente en 'data', sin el wrapper 'attributes'
+  if (data) {
+    // Ajustado a los nombres exactos de tu Strapi: tagLine y secundaryButton
+    const { tagLine, title, description, primaryButton, secundaryButton } = data;
+
+    if (heroTag) heroTag.textContent = tagLine;
+    if (heroTitle) heroTitle.innerHTML = title ? title.replace(/\n/g, '<br />') : '';
+    if (heroSubtitle) heroSubtitle.textContent = description;
+    if (primaryBtn) primaryBtn.textContent = primaryButton;
+    if (secondaryBtn) secondaryBtn.textContent = secundaryButton;
+
+    console.log('Hero data updated from Strapi');
+  }
+}
+
+
+// Inicializar carga de datos
+loadHeroData();
 
 
 // Hero Title Mouse Tracking Effect
